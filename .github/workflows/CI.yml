@@ -49,7 +49,17 @@ jobs:
         with:
           version: '1'
       - run: |
-          julia --project=docs -e 'import Pkg; Pkg.instantiate()'
+          julia --project=docs -e '
+            import Pkg; Pkg.add("Documenter")
+            using Pkg
+            Pkg.develop(PackageSpec(path=pwd()))
+            Pkg.instantiate()'
+      - run: |
+          julia --project=docs -e '
+            import Pkg; Pkg.add("Documenter")
+            using Documenter: doctest
+            using PSSFSS
+            doctest(PSSFSS)'
       - run: julia --project=docs --color=yes docs/make.jl
         env:
           JULIA_ERROR_COLOR: "Red"
