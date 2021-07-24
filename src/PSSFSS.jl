@@ -207,7 +207,8 @@ function _analyze(layers, sheets, junc, freqs, stkeys, stvalues;
     date, clock = split(string(now()),'T')
     pssfssv = PkgVersion.Version(PSSFSS)
     io=IOBuffer(); versioninfo(io); juliainfo = String(take!(io))
-    i = findfirst("Environment", juliainfo); juliainfo = juliainfo[1:first(i)-1]
+    i = findfirst("Environment", juliainfo)
+    isnothing(i) || (juliainfo = juliainfo[1:first(i)-1])
     juliainfo = juliainfo * "  Threads.nthreads() = $(Threads.nthreads())\n"
     @logfile "\n\nStarting PSSFSS $(pssfssv) analysis on $(date) at $(clock)\n$(juliainfo)\n\n"
     check_inputs(layers, sheets, junc, freqs, stkeys, stvalues, outlist)
