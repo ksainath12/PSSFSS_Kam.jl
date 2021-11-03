@@ -585,8 +585,8 @@ function magnetic_modal_sum_funcs(k0, u, ψ₁, ψ₂, layers::AbstractVector{La
 
     # Create proper sized storage arrays for FFT routine:
     mmaxo2 = mmax÷2
-    table1t = table1[-mmaxo2:mmaxo2-1,-mmaxo2:mmaxo2-1]
-    table2t = table2[-mmaxo2:mmaxo2-1,-mmaxo2:mmaxo2-1]
+    table1t::Matrix{ComplexF64} = table1[-mmaxo2:mmaxo2-1,-mmaxo2:mmaxo2-1]
+    table2t::Matrix{ComplexF64} = table2[-mmaxo2:mmaxo2-1,-mmaxo2:mmaxo2-1]
     fft!(table1t)
     fft!(table2t) 
     # Adjust phase according to Equation (5.32).  Also, include factor of 1/area:
