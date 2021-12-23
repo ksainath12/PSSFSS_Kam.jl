@@ -83,7 +83,9 @@ more about PSSFSS!
 [PSSFSS](https://github.com/simonp0420/PSSFSS) is
 written in the [Julia](https://julialang.org/) programming language.
 You must have Julia installed to use PSSFSS.
-For Windows users, I recommend using the [Chocolatey](https://chocolatey.org/) package manager to
+For Windows users, I recommend using the
+[Julia ap](https://www.microsoft.com/en-us/p/julia/9njnww8pvkmn)
+in the Windows Store to
 handle the Julia installation.  For Linux and Mac users, I recommend using
 [JILL.py](https://github.com/johnnychen94/jill.py) to manage the installation.
 
@@ -102,11 +104,11 @@ documentation for details.
 You will need a text editor to create Julia scripts that run PSSFSS.  One of the best for this purpose
 is [VS Code](https://code.visualstudio.com/), which has extensive support for both editing and running
 Julia via the
-[julia-vscode](https://github.com/julia-vscode/julia-vscode) extension.  Again, Windows users can
-conveniently install VS Code using Chocolatey.  Whatever your choice of editor, installation and
+[julia-vscode](https://github.com/julia-vscode/julia-vscode) extension.
+Whatever your choice of editor, installation and
 use of the [JuliaMono](https://cormullion.github.io/pages/2020-07-26-JuliaMono/) fonts is
 highly recommended. JuliaMono exploits Julia's support for Unicode fonts and
-allows one to use standard engineering symbols for
+allows one to use standard engineering/mathematical symbols for
 electromagnetic quantities directly in Julia scripts; symbols such as ϵᵣ, μᵣ, θ, ϕ, and tanδ.
 
 An alternative to using a text editor is to run scripts from a Jupyter notebook.  See the
