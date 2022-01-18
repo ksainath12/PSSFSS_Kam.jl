@@ -706,7 +706,15 @@ function get_gbldup(gbls::Vector{Gblock}, layers::Vector{Layer}, sheets::Vector{
 end # function
     
 
-function report_layers_sheets(layers, sheets, junc, rwgdat, usi)
+function report_layers_sheets(layers, sheets, junc, rwgdat, usi_in)
+    origs = unique(usi_in)
+    usi = similar(usi_in)
+    for (k,orig) in enumerate(origs)
+        for (j,u) in enumerate(usi_in)
+            u == orig && (usi[j] = k)
+        end
+    end
+    
     @logfile "Dielectric layer information... \n"
     @logfile " Layer  Width  units  epsr   tandel   mur  mtandel modes  beta1x  beta1y  beta2x  beta2y"
     @logfile " ----- ------------- ------- ------ ------- ------ ----- ------- ------- ------- -------"
