@@ -666,10 +666,10 @@ to `gbls[i]` and they can both use the same GSM.
 Two `Gblock`s are considered identical if they 
 
 1. Contain identical (`===`) `Sheet` objects at the same location within the block.
-2. Comprise the same number of dielectric layers with identical widths analyzed
+2. Comprise the same number of dielectric layers with identical widths and
    electrical characteristics.
 3. Are embedded within similar adjacent dielectric layers, having identical electrical
-   properties and numbers of modes.
+   properties, lattice vectors, and numbers of modes.
 
 `junc::Vector{Int}` is has length `length(Layers)-1`. `junc[i]`` is the sheet number 
 present at dielectric interface `i`, or `0` if no sheet is present there.
@@ -693,10 +693,22 @@ function get_gbldup(gbls::Vector{Gblock}, layers::Vector{Layer}, sheets::Vector{
             length(rng1) ≠ length(rng2) && continue
             n1 ≠ length(layers[first(rng2)].P) && continue
             n2 ≠ length(layers[1+last(rng2)].P) && continue
-            all(zip(rng1,rng2)) do (i1,i2)
-                i1 == first(rng1) && (return true)
+            # Check interior layers:
+            rng1test = 1+first(rng1):last(rng1)
+            rng2test = 1+first(rng2):last(rng2)
+            all(zip(rng1test,rng2test)) do (i1,i2)
                 layers[i1] == layers[i2]
             end || continue
+            # Check layers bounding the Gblocks:
+            rng1test = (first(rng1), 1+last(rng1))
+            rng2test = (first(rng2), 1+last(rng2))
+            all(zip(rng1test,rng2test)) do (i1,i2)
+                l1 = layers[i1]
+                l2 = layers[i2]
+                (l1.ϵᵣ == l2.ϵᵣ) && (l1.μᵣ == l2.μᵣ) &&
+                    (l1.P == l2.P) && (l1.β₁ == l2.β₁) && (l1.β₂ == l2.β₂)
+            end || continue
+            
             # If we made it to here, the two Gblocks are identical:
             gbldup[g1] = -1  # Indicate that GSM of Gblock g1 is to be saved
             gbldup[g2] = g1  # GSM of Gblock g2 is obtained from saved GSM of block g1
