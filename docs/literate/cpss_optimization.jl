@@ -207,6 +207,7 @@ plot!(p, comsol[:,1], comsol[:,2], label="COMSOL")
 # using Dates: now
 # 
 # let bestf = typemax(Float64)
+#     global objective
 #     function objective(x)
 #         period, wo, ho, wi, hi, wc, hc, t1, t2 = x
 #         ao = bo = ai = bi = ac = bc = period
