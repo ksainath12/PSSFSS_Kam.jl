@@ -611,7 +611,7 @@ function getsttuple(stkeys::Tuple{Symbol, Symbol}, stout::Float64, stin::Float64
         return (θ = stin, ϕ = stout)
     elseif stkeys[2] ∈ (:phi, :ϕ, :Phi, :PHI, :Φ)
         return (θ = stout, ϕ = stin)
-    elseif keys(steering)[1] ∈ (:psi1, :Psi1, :PSI1, :ψ₁, :Ψ₁, :ψ1, :Ψ1)
+    elseif stkeys[1] ∈ (:psi1, :Psi1, :PSI1, :ψ₁, :Ψ₁, :ψ1, :Ψ1)
         return (ψ₁ = stout, ψ₂ = stin)
     else
         return (ψ₁ = stin, ψ₂ = stout)
