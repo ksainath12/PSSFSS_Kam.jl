@@ -10,6 +10,7 @@ can be conveniently visualized using the `plot` command of the `Plots` package.
 """
 module PSSFSS
 
+
 if isdefined(Base, :Experimental) && isdefined(Base.Experimental, Symbol("@optlevel"))
     @eval Base.Experimental.@optlevel 3
 end
@@ -113,6 +114,7 @@ Generate output files as specified in `outlist`.
 """
 function analyze(strata::Vector, flist, steering; outlist=[], logfile="pssfss.log", 
     resultfile="pssfss.res", showprogress::Bool=true)
+    tstart = time()
     layers = Layer[deepcopy(s) for s in strata if s isa Layer]
     sheets = RWGSheet[s for s in strata if s isa Sheet]
     islayer = map(x -> x isa Layer, strata)
@@ -143,7 +145,7 @@ function analyze(strata::Vector, flist, steering; outlist=[], logfile="pssfss.lo
 
     with_logger(pssfss_logger(logfile)) do 
         _analyze(layers, sheets, junc, freqs, stkeys, stvalues; 
-                 outlist, resultfile, showprogress)
+                 outlist, resultfile, showprogress, tstart)
     end
 end # function
 
@@ -151,7 +153,7 @@ end # function
 
 """
 function _analyze(layers, sheets, junc, freqs, stkeys, stvalues; 
-    outlist=Any[], resultfile="pssfss.res", showprogress::Bool=true)
+    outlist=Any[], resultfile="pssfss.res", showprogress::Bool=true, tstart=time())
 
 
 ## Positional Arguments
@@ -194,10 +196,12 @@ function _analyze(layers, sheets, junc, freqs, stkeys, stvalues;
   post-processed to produce similar or additional outputs that were requested at run time
   via the `outlist` argument.
 
-- `showprogress`: If true, use ProgressMeter to show execution progress
+- `showprogress`: If true, use ProgressMeter to show execution progress.
+
+- `tstart`: Nanoseconds since epoch at start of program execution.
 """
 function _analyze(layers, sheets, junc, freqs, stkeys, stvalues; 
-    outlist=[], resultfile="pssfss.res", showprogress::Bool=true)
+    outlist=[], resultfile="pssfss.res", showprogress::Bool=true, tstart=time())
     showprogress && println("Beginning PSSFSS Analysis")
     ncount = 0 # Number of analyses performed
     ntotal = length(freqs) * length(stvalues[1]) * length(stvalues[2])
@@ -331,7 +335,8 @@ function _analyze(layers, sheets, junc, freqs, stkeys, stvalues;
     end # steering angle loop
 
     date, clock = split(string(now()),'T')
-    @logfile "\n\n PSSFSS analysis exiting on $(date) at $(clock)\n\n"
+    telapsed = round(time() - tstart, digits=1)
+    @logfile "\n\n PSSFSS analysis exiting on $(date) at $(clock) ($(telapsed) seconds elapsed time)\n\n"
     return results
 end # function
 
